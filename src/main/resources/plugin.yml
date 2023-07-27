@@ -1,0 +1,5 @@
+name: AutoPickup
+version: '${project.version}'
+main: me.araacuteuwu.autopickup.AutoPickup
+api: 1.0.0
+author: AraaCuteUwU

@@ -1,0 +1,3 @@
+# Set a title here that appears when the player's inventory is full.
+# Leave blank to disable title.
+full-inventory-title: '&cInventory full!'
