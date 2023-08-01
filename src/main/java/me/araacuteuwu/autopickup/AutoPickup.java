@@ -23,9 +23,11 @@ public class AutoPickup extends PluginBase implements Listener {
         Item[] itemsToAdd = new Item[drops.length];
         int itemCount = 0;
 
-        for (int i = 0; i < drops.length; i++) {
-            if (player.getInventory().canAddItem(drops[i])) {
-                itemsToAdd[itemCount] = drops[i];
+        if(this.isWorldBlacklisted(player)) return;
+
+        for (Item drop : drops) {
+            if (player.getInventory().canAddItem(drop)) {
+                itemsToAdd[itemCount] = drop;
                 itemCount++;
             } else {
                 inventoryFull = true;
@@ -43,8 +45,20 @@ public class AutoPickup extends PluginBase implements Listener {
         event.setDrops(new Item[0]);
 
         if (inventoryFull) {
-            player.sendTitle(this.getConfig().getString("full-inventory-title").replace("&", "§"));
+            this.alert(player, this.getConfig().getString("full-inventory").replace("&", "§"));
             event.setCancelled();
+        }
+    }
+
+    public boolean isWorldBlacklisted(Player player) {
+        return this.getConfig().getList("worlds").contains(player.getLevel().getFolderName());
+    }
+
+    public void alert(Player player, String message) {
+        switch (this.getConfig().getString("type").toLowerCase()) {
+            case "title" -> player.sendTitle(message);
+            case "tip" -> player.sendTip(message);
+            default -> player.sendMessage(message);
         }
     }
 }
